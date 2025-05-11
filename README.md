@@ -1,6 +1,4 @@
-اینجا همون متن خودت هست با اضافه کردن آیکون‌های مرتبط، بدون اینکه لحن تغییر کنه:
 
----
 
 # 🖧 Server Communication System
 
@@ -8,14 +6,27 @@
 
 This project is a server communication system that I built in C. It handles basic requests like `GET`, `DELETE`, and `PUT` from clients using socket programming. The server uses shared memory and semaphores to manage inter-process communication and avoid race conditions. It’s a simple but effective way to manage multiple client connections concurrently, making sure everything runs smoothly.
 
-## ✨ Features
+## 🔑 Key Concept
 
-* 🔌 **Server Communication**: The server listens for incoming requests via TCP/IP sockets and sends responses.
-* 📩 **Request Handling**: Supports `GET`, `DELETE`, and `PUT` requests.
-* 🧠 **Shared Memory**: Uses shared memory to allow different processes to access and modify data.
-* 🚦 **Semaphores**: Ensure that multiple processes don't mess with the shared memory at the same time.
-* 🛡 **Race Conditions Handling**: Prevents data corruption and unpredictable behavior by managing concurrent access to shared resources.
-* 🐳 **Dockerized**: The project is fully Dockerized for easy deployment anywhere.
+### 1️⃣ Shared Memory
+
+Shared memory is like a big, shared space in the system where multiple processes can read from and write to. It’s faster than passing data through files or network protocols because everything happens locally in memory. I used shared memory to store data that the server processes and clients need to access concurrently.
+
+
+### 2️⃣ Semaphores
+
+
+Semaphores are like traffic lights for processes. They make sure that only one process can access the shared memory at a time. So, when one process is reading or writing data, others will have to wait until it’s done. This prevents multiple processes from messing with the data at the same time, which could lead to errors.
+
+### 3️⃣ Race Conditions
+
+A race condition happens when two or more processes try to access shared data at the same time, leading to unpredictable behavior or corrupted data. In this project, semaphores ensure that only one process can access shared memory at a time, preventing race conditions from happening.
+
+### 4️⃣ Semaphore Operations
+
+* **wait()**: This makes a process wait if the semaphore value is zero (meaning the resource is in use).
+* **signal()**: This increases the semaphore value, allowing other processes to use the resource if it’s available.
+
 
 ## 🛠 Technologies
 
