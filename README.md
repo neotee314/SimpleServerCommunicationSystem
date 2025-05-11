@@ -193,4 +193,3 @@ All rights reserved by the author, **Abolfazl Heidari**.
 
 ---
 
-اگه دوست داشتی نسخه PDF‌ش رو هم برات بسازم. می‌خوای؟
