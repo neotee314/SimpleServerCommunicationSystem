@@ -186,13 +186,7 @@ Then, you can interact with the server by using commands like:
 
 This project is a great learning tool for anyone interested in understanding server-client communication, socket programming, and concurrent process management using semaphores and shared memory.
 
----
 
-## ⚖ License
-
-All rights reserved by the author, **Abolfazl Heidari**.
-
----
 
 ## 🧑‍💻 Example Workflow
 
@@ -286,3 +280,10 @@ Here’s how the interaction with the server will look like when running it with
       ```
       Server: GET:key1:key not exists
       ```
+---
+
+## ⚖ License
+
+All rights reserved by the author, **Abolfazl Heidari**.
+
+---
