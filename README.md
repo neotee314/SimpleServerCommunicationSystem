@@ -1,20 +1,16 @@
-
-
 # 🖧 Server Communication System
 
 ## 📝 Overview
 
 This project is a server communication system that I built in C. It handles basic requests like `GET`, `DELETE`, and `PUT` from clients using socket programming. The server uses shared memory and semaphores to manage inter-process communication and avoid race conditions. It’s a simple but effective way to manage multiple client connections concurrently, making sure everything runs smoothly.
 
-## 🔑 Key Concept
+## 🔑 Key Concepts
 
 ### 1️⃣ Shared Memory
 
 Shared memory is like a big, shared space in the system where multiple processes can read from and write to. It’s faster than passing data through files or network protocols because everything happens locally in memory. I used shared memory to store data that the server processes and clients need to access concurrently.
 
-
 ### 2️⃣ Semaphores
-
 
 Semaphores are like traffic lights for processes. They make sure that only one process can access the shared memory at a time. So, when one process is reading or writing data, others will have to wait until it’s done. This prevents multiple processes from messing with the data at the same time, which could lead to errors.
 
@@ -27,6 +23,17 @@ A race condition happens when two or more processes try to access shared data at
 * **wait()**: This makes a process wait if the semaphore value is zero (meaning the resource is in use).
 * **signal()**: This increases the semaphore value, allowing other processes to use the resource if it’s available.
 
+### 5️⃣ TCP/IP Sockets
+
+The server and clients communicate via TCP sockets.
+
+### 6️⃣ Client-Server Model
+
+* The server listens on a specific port for incoming client connections.
+* Clients send commands (e.g., `GET`, `PUT`, `DELETE`) to the server.
+* The server processes the commands and responds to the client.
+
+---
 
 ## 🛠 Technologies
 
@@ -35,35 +42,6 @@ A race condition happens when two or more processes try to access shared data at
 * 🧠 **Shared Memory**: Enables faster and efficient inter-process communication.
 * 🚦 **Semaphores**: Manage concurrent access to prevent race conditions.
 * 🐳 **Docker**: Ensures the app runs anywhere consistently.
-
-## 🔑 Key Concepts
-
-### 1️⃣ Shared Memory
-
-Shared memory is like a big, shared space in the system where multiple processes can read from and write to...
-
-### 2️⃣ Semaphores
-
-Semaphores are like traffic lights for processes...
-
-### 3️⃣ Race Conditions
-
-A race condition happens when two or more processes try to access shared data...
-
-### 4️⃣ Semaphore Operations
-
-* 🕒 **wait()**
-* ✅ **signal()**
-
-### 5️⃣ TCP/IP Sockets
-
-The server and clients communicate via TCP sockets...
-
-### 6️⃣ Client-Server Model
-
-* The server listens...
-* Clients send commands...
-* Server processes and responds...
 
 ---
 
@@ -97,19 +75,27 @@ The server and clients communicate via TCP sockets...
 
 ---
 
-## 🐳 Docker Setup
+### 🐳 Docker Setup
 
-1. **Build the Docker image**:
+1. **Build the Docker Image**:
+
+   To build the Docker image for the `SimpleTCPKeyValueServer`, run the following command:
 
    ```bash
    docker build -t my_fantastic_key_value_server .
    ```
 
-2. **Run the Docker container**:
+   This command creates a Docker image from the Dockerfile in the current directory and tags it as `my_fantastic_key_value_server`.
+
+2. **Run the Docker Container**:
+
+   To run the Docker container and map port `5678` in the container to port `5678` on your host, run:
 
    ```bash
-   docker run -p 5678:5678 server-image
+   docker run -p 5678:5678 my_fantastic_key_value_server
    ```
+
+   Now, the server is running on port `5678` of your host and will listen to any requests sent to the container.
 
 ---
 
@@ -117,37 +103,52 @@ The server and clients communicate via TCP sockets...
 
 ### 🖥 Server
 
-To run the server:
+To run the TCP server locally, execute the following command:
 
 ```bash
 ./SimpleTCPKeyValueServer 5678
 ```
 
-### 💬 Client
+When the server is running, it will show a message like:
+
+```
+[+] Server listening on port 5678
+```
+
+### 🌐 Connecting to the Server with Telnet
+
+Once the server is running, you can connect to it using Telnet. Open a terminal and run:
+
+```bash
+telnet localhost 5678
+```
+
+Once connected, you'll see a welcome message like:
+
+```
+[+] Connected to Server
+[+] To exit the program, use the 'exit' command
+```
+
+Then, you can interact with the server by using commands like:
 
 * **GET**:
 
   ```bash
-  GET /resource
+  GET Key1
   ```
+
 * **DELETE**:
 
   ```bash
-  DEL /resource
+  DEL key1
   ```
+
 * **PUT**:
 
   ```bash
-  PUT /resource {data}
+  PUT key1 value1
   ```
-
----
-
-## 🔄 Example Workflow
-
-1. **Start the server**
-2. **Client connects**
-3. **Server processes the request**
 
 ---
 
@@ -183,7 +184,7 @@ To run the server:
 
 ## 🏁 Conclusion
 
-This project is a great learning tool for anyone interested in...
+This project is a great learning tool for anyone interested in understanding server-client communication, socket programming, and concurrent process management using semaphores and shared memory.
 
 ---
 
@@ -193,3 +194,95 @@ All rights reserved by the author, **Abolfazl Heidari**.
 
 ---
 
+## 🧑‍💻 Example Workflow
+
+Here’s how the interaction with the server will look like when running it with Telnet:
+
+1. **Start the server** by running the command:
+
+   ```bash
+   docker run -it my_fantastic_key_value_server /bin/bash
+   ```
+
+   The server will output:
+
+   ```
+   [+] Server listening on port 5678
+   ```
+
+2. **Connect using Telnet**:
+
+   ```bash
+   telnet 127.0.0.1 5678
+   ```
+
+   You'll see the following messages:
+
+   ```
+   [+] Program started
+   [+] Connected to Server
+   [+] To exit the program, use the 'exit' command
+   [+] Client....
+   ```
+
+3. **Interact with the server**:
+
+    * **Send a GET request for a non-existent key**:
+
+      ```bash
+      GET key1
+      ```
+
+      Server response:
+
+      ```
+      Server: GET:key1:key not exists
+      ```
+
+    * **Store a key-value pair using PUT**:
+
+      ```bash
+      PUT key1 value1
+      ```
+
+      Server response:
+
+      ```
+      Server: PUT:key1:value1
+      ```
+
+    * **Retrieve the stored key-value pair**:
+
+      ```bash
+      GET key1
+      ```
+
+      Server response:
+
+      ```
+      Server: GET:key1:value1
+      ```
+
+    * **Delete the key**:
+
+      ```bash
+      DEL key1
+      ```
+
+      Server response:
+
+      ```
+      Server: DEL:key1:deleted
+      ```
+
+    * **Try to retrieve the deleted key**:
+
+      ```bash
+      GET key1
+      ```
+
+      Server response:
+
+      ```
+      Server: GET:key1:key not exists
+      ```

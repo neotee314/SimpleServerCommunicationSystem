@@ -2,50 +2,34 @@
 #include <stdio.h>
 #include "protocol.h"
 #include "keyValueStore.h"
+#include "sub.h"
 #include "utils.h"
 
-void process_command(char *input, int client_socket) {
-    trim(input);
-    char *cmd = strtok(input, ":");
-    if (!cmd) {
-        say(client_socket, "Invalid command\n");
-        return;
-    }
+// Handle communication with client
+void communicate(int client_socket) {
+    if (printStartingMessage(client_socket) != -1) {
+        while (1) {
+            char buf[BUFFER_SIZE];
+            read_in(client_socket, buf, sizeof(buf));
 
-    if (strcmp(cmd, "PUT") == 0) {
-        char *key = strtok(NULL, ":");
-        char *value = strtok(NULL, ":");
-        if (!key || !value) {
-            say(client_socket, "PUT needs key and value\n");
-            return;
+            char *cmd = strtok(buf, " ");
+            char *key = strtok(NULL, " ");
+            char *value = strtok(NULL, "");
+
+            if (key) trim(key);
+            if (value) trim(value);
+
+            if (cmd && strncasecmp(cmd, "put", 3) == 0) {
+                performPUT(key, value, client_socket);
+            } else if (cmd && strncasecmp(cmd, "del", 3) == 0) {
+                performDEL(key, client_socket);
+            } else if (cmd && strncasecmp(cmd, "get", 3) == 0) {
+                performGET(key, client_socket);
+            } else if (cmd && strncasecmp(cmd, "exit", 4) == 0) {
+                disconnectFromServer(client_socket);
+            } else {
+                say(client_socket, "Unknown command\r\n");
+            }
         }
-        int r = put(key, value);
-        if (r == 1) say(client_socket, "OK: entry added\n");
-        else if (r == -1) say(client_socket, "OK: entry updated\n");
-        else say(client_socket, "Error: memory full\n");
-
-    } else if (strcmp(cmd, "GET") == 0) {
-        char *key = strtok(NULL, ":");
-        if (!key) {
-            say(client_socket, "GET needs key\n");
-            return;
-        }
-        char res[500];
-        int r = get(key, res);
-        say(client_socket, res);
-        say(client_socket, "\n");
-
-    } else if (strcmp(cmd, "DEL") == 0) {
-        char *key = strtok(NULL, ":");
-        if (!key) {
-            say(client_socket, "DEL needs key\n");
-            return;
-        }
-        int r = del(key);
-        if (r == 1) say(client_socket, "OK: deleted\n");
-        else say(client_socket, "Key not found\n");
-
-    } else {
-        say(client_socket, "Unknown command\n");
     }
 }
