@@ -9,15 +9,18 @@ COPY include/ include/
 COPY src/ src/
 COPY CMakeLists.txt .
 
-# Install dependencies: wget, make, latest CMake, and Telnet client
+# Install dependencies: g++, make, gdb, wget, telnet, latest CMake
 RUN apt-get update && \
-    apt-get install -y wget make telnet && \
+    apt-get install -y g++ make gdb wget telnet && \
     wget https://github.com/Kitware/CMake/releases/download/v3.26.4/cmake-3.26.4-linux-x86_64.sh && \
     chmod +x cmake-3.26.4-linux-x86_64.sh && \
     mkdir -p /opt/cmake && \
     ./cmake-3.26.4-linux-x86_64.sh --prefix=/opt/cmake --skip-license && \
     ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake && \
     rm cmake-3.26.4-linux-x86_64.sh
+
+ENV PATH="/opt/cmake/bin:${PATH}"
+
 
 # Build the project
 RUN cmake . && make

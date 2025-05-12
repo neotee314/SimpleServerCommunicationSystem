@@ -182,11 +182,64 @@ Then, you can interact with the server by using commands like:
 
 ---
 
-## 🏁 Conclusion
-
-This project is a great learning tool for anyone interested in understanding server-client communication, socket programming, and concurrent process management using semaphores and shared memory.
 
 
+## ⚙️ CLion Integration with Docker Toolchain
+
+You can use **JetBrains CLion** to build and run the project inside a Docker container by following these steps:
+
+### 1️⃣ Add Docker to CLion
+
+1. Go to
+
+   ```
+   File > Settings > Build, Execution, Deployment > Docker
+   ```
+2. Click on ➕ and choose:
+
+   * Type: **Docker for Windows** or **Unix Socket**, depending on your OS.
+3. Click `Test Connection` — it should turn green if everything is okay.
+
+---
+
+### 2️⃣ Configure a Remote Toolchain
+
+1. Go to
+
+   ```
+   File > Settings > Build, Execution, Deployment > Toolchains
+   ```
+2. Click ➕ and create a new toolchain.
+3. Set the toolchain type to **Remote Host via Docker**.
+4. Choose your image (e.g., `my_fantastic_key_value_server`).
+5. Set the paths:
+
+   * **CMake**: `/opt/cmake/bin/cmake`
+   * **C Compiler**: `gcc`
+   * **C++ Compiler**: `g++`
+   * **Make**: `make`
+
+Click **Test Toolchain** to make sure everything works.
+
+---
+
+### 3️⃣ Configure CMake Profile
+
+1. Go to
+
+   ```
+   File > Settings > Build, Execution, Deployment > CMake
+   ```
+2. In your active profile, set **Toolchain** to the one you just created (e.g., `Docker-GCC`).
+3. Apply the changes.
+
+---
+
+### ✅ Run and Debug
+
+Now you can build and run the project directly in Docker by clicking the Run ▶️ button in CLion. The code will be mounted inside the container, compiled with the remote toolchain, and executed there.
+
+---
 
 ## 🧑‍💻 Example Workflow
 
@@ -282,6 +335,11 @@ Here’s how the interaction with the server will look like when running it with
       ```
 ---
 
+## 🏁 Conclusion
+
+This project is a great learning tool for anyone interested in understanding server-client communication, socket programming, and concurrent process management using semaphores and shared memory.
+
+---
 ## ⚖ License
 
 All rights reserved by the author, **Abolfazl Heidari**.
