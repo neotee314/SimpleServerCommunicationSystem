@@ -92,7 +92,7 @@ The server and clients communicate via TCP sockets.
    To run the Docker container and map port `5678` in the container to port `5678` on your host, run:
 
    ```bash
-   docker run -p 5678:5678 my_fantastic_key_value_server
+   docker run -it my_fantastic_key_value_server  
    ```
 
    Now, the server is running on port `5678` of your host and will listen to any requests sent to the container.
@@ -195,7 +195,7 @@ Here’s how the interaction with the server will look like when running it with
 1. **Start the server** by running the command:
 
    ```bash
-   docker run -it my_fantastic_key_value_server /bin/bash
+   docker run -it my_fantastic_key_value_server  
    ```
 
    The server will output:
