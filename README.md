@@ -128,17 +128,17 @@ To run the server:
 * **GET**:
 
   ```bash
-  GET /resource
+  GET key1
   ```
 * **DELETE**:
 
   ```bash
-  DEL /resource
+  DEL key1
   ```
 * **PUT**:
 
   ```bash
-  PUT /resource {data}
+  PUT key1 value1
   ```
 
 ---
